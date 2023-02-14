@@ -1,5 +1,5 @@
 table, th, td {
-    border: 1px solid;
+    border:0px solid;
     color: greenyellow;
 }
 td {
@@ -24,3 +24,16 @@ td {
     top: 50px;
     right: 50px;
   }
+
+
+  html {
+    margin: 0px;
+    height: 100vh;
+
+ }
+ 
+ body {
+    margin: 0px;
+    min-height: 100vh;
+
+ }

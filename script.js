@@ -1,6 +1,6 @@
 console.log("Init");
 
-const intervalTime = 250;
+const intervalTime = 100;
 
 const startPos = Math.round(tableSize / 2);
 

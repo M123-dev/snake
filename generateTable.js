@@ -1,14 +1,27 @@
-const tableSize = 15;
+const tableSize = 34;
 
-const w = window.innerWidth;
-let windowSize = window.innerHeight;
-if (w < windowSize) {
-  windowSize = w;
+console.log('Resize')
+
+let body = document.getElementById("body");
+
+let windowSize = body.clientHeight;
+
+if(body.clientWidth < body.clientHeight){
+  console.log("Use width")
+  windowSize = body.innerWidth;
 }
-let trSize = Math.floor(windowSize / tableSize);
+
+
+console.log(windowSize);
+
+let raw_size = windowSize / tableSize;
+console.log(raw_size);
+let trSize = Math.floor(raw_size);
+
+console.log(trSize)
 
 //Generate table
-let body = document.getElementById("body");
+
 let htmlToAdd = "<table>";
 
 htmlToAdd += "<score class='top-right' id='score'>Hallo</score>";
@@ -16,7 +29,8 @@ htmlToAdd += "<score class='top-right' id='score'>Hallo</score>";
 for (let y = tableSize - 1; y > 0; y--) {
   htmlToAdd += "<tr>";
   for (let x = 0; x < tableSize; x++) {
-    htmlToAdd += `<td id=${x}:${y} width="${trSize}" height="${trSize}"></td>`;
+                                   style="width: 20px;height: 40px"
+    htmlToAdd += `<td id=${x}:${y} style="width:${trSize}px; height:${trSize}px"></td>`;
   }
   htmlToAdd += "</tr>";
 }

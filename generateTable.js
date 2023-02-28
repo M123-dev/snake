@@ -8,21 +8,21 @@ let windowSize = body.clientHeight;
 
 if(body.clientWidth < body.clientHeight){
   console.log("Use width")
-  windowSize = body.innerWidth;
+  windowSize = body.clientWidth;
 }
 
 
-console.log(windowSize);
+console.log('Window size:' + windowSize);
 
 let raw_size = windowSize / tableSize;
-console.log(raw_size);
+console.log('Raw size: ' + raw_size);
 let trSize = Math.floor(raw_size);
 
-console.log(trSize)
+console.log('TR Size' + trSize)
 
 //Generate table
 
-let htmlToAdd = "<table>";
+let htmlToAdd = "<table cellspacing='0' cellpadding='0' >";
 
 htmlToAdd += "<score class='top-right' id='score'>Hallo</score>";
 

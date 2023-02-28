@@ -130,6 +130,8 @@ window.addEventListener(
           direction = Directions.Right;
         }
         break;
+      case "f":
+        startPathGeneration();
       case " ":
         if (mainThreat !== undefined) {
           stop();

@@ -19,9 +19,7 @@ function generatePathfindingTable() {
             grid[i][j] = 'Empty';
         }
     }
-    
 
-    console.log('Snake: ' + snake);
 
     for (i in snake) {
         grid[snake[i].x][snake[i].y] = "Obstacle";
@@ -162,9 +160,10 @@ function startPathGeneration(){
     
     var current = {x:snake[0].x, y:snake[0].y}
     
-    console.log(finalpath);
+    console.log('Final path ' + finalpath);
 
     for(i in finalpath){
+        console.log('Path loop' + i);
         var next_obj;
         switch (finalpath[i]) {
             case Directions.Up:
@@ -184,7 +183,8 @@ function startPathGeneration(){
               next_obj = { error: "Error" };
               break;
           }
-
+        
+          current = next_obj;
 
           document.getElementById(stringFromCords(next_obj)).className = "path";
     }

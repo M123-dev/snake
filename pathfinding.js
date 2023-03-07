@@ -1,3 +1,7 @@
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 // Table size from generateTable.js
 var gridSize = tableSize;
@@ -17,7 +21,7 @@ function generatePathfindingTable() {
         grid[snake[i].x][snake[i].y] = "Obstacle";
     }
 
-    grid[snake[0].x][snake[0].y] = "Start";
+    //grid[snake[0].x][snake[0].y] = "Start";
     grid[apple_obj.x][apple_obj.y] = "Goal";
 
 }
@@ -25,9 +29,9 @@ function generatePathfindingTable() {
 
 // Start location is:
 // {x:y}
-var findShortestPath = function (startCoordinates, grid) {
-    var y = startCoordinates.y;
+var findShortestPath = async function (startCoordinates, grid) {
     var x = startCoordinates.x;
+    var y = startCoordinates.y;
 
     // Each "location" will store its coordinates
     // and the shortest path required to arrive there
@@ -43,6 +47,11 @@ var findShortestPath = function (startCoordinates, grid) {
 
 
     while (queue.length > 0) {
+
+        // Used for path debugging
+        //await sleep(1);
+        
+        
         // Remove the first location
         var currentLocation = queue.shift();
 
@@ -94,7 +103,6 @@ var locationStatus = function (location, grid) {
         x >= gridSize ||
         y < 0 ||
         y >= gridSize) {
-
         // location is not on the grid
         return 'Invalid';
     } else if (grid[x][y] === 'Goal') {
@@ -115,7 +123,7 @@ var exploreInDirection = function (currentLocation, direction, grid) {
     var y = currentLocation.y;
     var x = currentLocation.x;
 
-    if (direction === Directions.up) {
+    if (direction === Directions.Up) {
         y += 1;
     } else if (direction === Directions.Right) {
         x += 1;
@@ -136,7 +144,8 @@ var exploreInDirection = function (currentLocation, direction, grid) {
     // If this new location is valid, mark it as 'Visited'
     if (newLocation.status === 'Valid') {
         grid[newLocation.x][newLocation.y] = 'Visited';
-        document.getElementById(stringFromCords({x:x, y:y})).classList.add(grid[x][y]);
+        // Paint the visited tiles
+        document.getElementById(stringFromCords({x:x, y:y})).classList.add('Visited');
     }
 
     return newLocation;
@@ -144,36 +153,27 @@ var exploreInDirection = function (currentLocation, direction, grid) {
 
 
 
-function startPathGeneration() {
+async function startPathGeneration(){
     console.log('pathfinding')
     generatePathfindingTable();
 
     console.log(grid.length)
     
 
-    for (let x = 0; x < gridSize; x++) {
+    /*for (let x = 0; x < gridSize; x++) {
         for (let y = 0; y < gridSize; y++) {
             //console.log(x + ' ' + y);
             document.getElementById(stringFromCords({x:x, y:y})).classList.add(grid[x][y]);
         }
-    }
+    }*/
     
-    var result = findShortestPath({x:snake[0].x,y:snake[0].y,}, grid);
+    var result = await findShortestPath({x:snake[0].x,y:snake[0].y,}, grid);
 
     var finalpath = result.path;
 
     console.log(result);
 
-
-
     console.log('Final path ' + finalpath);
-
-    for (let x = 0; x < gridSize; x++) {
-        for (let y = 0; y < gridSize; y++) {
-            //console.log(x + ' ' + y);
-            document.getElementById(stringFromCords({x:x, y:y})).classList.add(grid[x][y]);
-        }
-    }
 
     var current = {x:snake[0].x , y:snake[0].y}
     for(i in finalpath){

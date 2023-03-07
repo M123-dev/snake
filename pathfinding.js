@@ -26,14 +26,14 @@ function generatePathfindingTable() {
 // Start location is:
 // {x:y}
 var findShortestPath = function (startCoordinates, grid) {
-    var distanceFromBottom = startCoordinates.y;
-    var distanceFromLeft = startCoordinates.x;
+    var y = startCoordinates.y;
+    var x = startCoordinates.x;
 
     // Each "location" will store its coordinates
     // and the shortest path required to arrive there
     var location = {
-        distanceFromBottom: distanceFromBottom,
-        distanceFromLeft: distanceFromLeft,
+        y: y,
+        x: x,
         path: [],
         status: 'Start'
     };
@@ -88,19 +88,19 @@ var findShortestPath = function (startCoordinates, grid) {
 // Returns "Valid", "Invalid", "Blocked", or "Goal"
 var locationStatus = function (location, grid) {
     var gridSize = tableSize;
-    var dfb = location.distanceFromBottom;
-    var dfl = location.distanceFromLeft;
+    var y = location.y;
+    var x = location.x;
 
-    if (location.distanceFromLeft < 0 ||
-        location.distanceFromLeft >= gridSize ||
-        location.distanceFromBottom < 0 ||
-        location.distanceFromBottom >= gridSize) {
+    if (location.x < 0 ||
+        location.x >= gridSize ||
+        location.y < 0 ||
+        location.y >= gridSize) {
 
         // location is not on the grid
         return 'Invalid';
-    } else if (grid[dfb][dfl] === 'Goal') {
+    } else if (grid[y][x] === 'Goal') {
         return 'Goal';
-    } else if (grid[dfb][dfl] !== 'Empty') {
+    } else if (grid[y][x] !== 'Empty') {
         // location is either a part of the snake or has been visited
         return 'Blocked';
     } else {
@@ -113,22 +113,22 @@ var exploreInDirection = function (currentLocation, direction, grid) {
     var newPath = currentLocation.path.slice();
     newPath.push(direction);
 
-    var dfb = currentLocation.distanceFromBottom;
-    var dfl = currentLocation.distanceFromLeft;
+    var y = currentLocation.y;
+    var x = currentLocation.x;
 
     if (direction === Directions.up) {
-        dfb += 1;
+        y += 1;
     } else if (direction === Directions.Right) {
-        dfl += 1;
+        x += 1;
     } else if (direction === Directions.Down) {
-        dfb -= 1;
+        y -= 1;
     } else if (direction === Directions.Left) {
-        dfl -= 1;
+        x -= 1;
     }
 
     var newLocation = {
-        distanceFromBottom: dfb,
-        distanceFromLeft: dfl,
+        y: y,
+        x: x,
         path: newPath,
         status: 'Unknown'
     };
@@ -136,7 +136,7 @@ var exploreInDirection = function (currentLocation, direction, grid) {
 
     // If this new location is valid, mark it as 'Visited'
     if (newLocation.status === 'Valid') {
-        grid[newLocation.distanceFromBottom][newLocation.distanceFromLeft] = 'Visited';
+        grid[newLocation.y][newLocation.x] = 'Visited';
     }
 
     return newLocation;

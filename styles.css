@@ -1,7 +1,9 @@
-table, th, td {
-    border:0px solid;
+table,
+th,
+td {
+    border: 0px solid;
     color: greenyellow;
-    padding: 0; 
+    padding: 0;
     margin: 0;
 }
 
@@ -21,6 +23,10 @@ td {
     background-color: red;
 }
 
+.Visited {
+    background-color: darkgreen;
+}
+
 .path {
     background-color: darkorchid;
 }
@@ -30,17 +36,16 @@ td {
     position: absolute;
     top: 50px;
     right: 50px;
-  }
+}
 
 
-  html {
+html {
     margin: 0px;
     height: 100vh;
 
- }
- 
- body {
+}
+
+body {
     margin: 0px;
     min-height: 100vh;
-
- }
+}

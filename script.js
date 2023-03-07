@@ -104,9 +104,9 @@ window.addEventListener(
       return; // Do nothing if the event was already processed
     }
     
-    if(event.key !== " "){
+    /*if(event.key !== " " && event.key !== "f"){
       start();
-    }
+    }*/
     
 
     switch (event.key) {
@@ -114,25 +114,30 @@ window.addEventListener(
         if (direction != Directions.Up) {
           direction = Directions.Down;
         }
+        start();
         break;
       case "ArrowUp":
         if (direction != Directions.Down) {
           direction = Directions.Up;
         }
+        start();
         break;
       case "ArrowLeft":
         if (direction != Directions.Right) {
           direction = Directions.Left;
         }
+        start();
         break;
       case "ArrowRight":
         if (direction != Directions.Left) {
           direction = Directions.Right;
         }
+        start();
         break;
       case "f":
         startPathGeneration();
-      case " ":
+        break;
+      case "p":
         if (mainThreat !== undefined) {
           stop();
         } else {

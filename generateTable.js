@@ -26,7 +26,7 @@ let htmlToAdd = "<table cellspacing='0' cellpadding='0' >";
 
 htmlToAdd += "<score class='top-right' id='score'>Hallo</score>";
 
-for (let y = tableSize - 1; y > 0; y--) {
+for (let y = tableSize - 1; y >= 0; y--) {
   htmlToAdd += "<tr>";
   for (let x = 0; x < tableSize; x++) {
                                    style="width: 20px;height: 40px"

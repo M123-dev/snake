@@ -3,14 +3,7 @@
 var gridSize = tableSize;
 var grid = [];
 
-
-
-
-
-
-
 function generatePathfindingTable() {
-
     grid = [];
 
     for (var i = 0; i < gridSize; i++) {
@@ -19,7 +12,6 @@ function generatePathfindingTable() {
             grid[i][j] = 'Empty';
         }
     }
-
 
     for (i in snake) {
         grid[snake[i].x][snake[i].y] = "Obstacle";
@@ -32,10 +24,10 @@ function generatePathfindingTable() {
 
 
 // Start location is:
-// [distanceFromBottom, distanceFromLeft]
+// {x:y}
 var findShortestPath = function (startCoordinates, grid) {
-    var distanceFromBottom = startCoordinates[0];
-    var distanceFromLeft = startCoordinates[1];
+    var distanceFromBottom = startCoordinates.y;
+    var distanceFromLeft = startCoordinates.x;
 
     // Each "location" will store its coordinates
     // and the shortest path required to arrive there
@@ -46,10 +38,10 @@ var findShortestPath = function (startCoordinates, grid) {
         status: 'Start'
     };
 
-    // Initialize the queue with the start location already inside
+    // Initialize with the start location
     var queue = [location];
 
-    
+
     while (queue.length > 0) {
         // Remove the first location
         var currentLocation = queue.shift();
@@ -57,7 +49,7 @@ var findShortestPath = function (startCoordinates, grid) {
         // Explore up
         var newLocation = exploreInDirection(currentLocation, Directions.Up, grid);
         if (newLocation.status === 'Goal') {
-            return newLocation.path;
+            return newLocation;
         } else if (newLocation.status === 'Valid') {
             queue.push(newLocation);
         }
@@ -65,7 +57,7 @@ var findShortestPath = function (startCoordinates, grid) {
         // Explore right
         var newLocation = exploreInDirection(currentLocation, Directions.Right, grid);
         if (newLocation.status === 'Goal') {
-            return newLocation.path;
+            return newLocation;
         } else if (newLocation.status === 'Valid') {
             queue.push(newLocation);
         }
@@ -73,7 +65,7 @@ var findShortestPath = function (startCoordinates, grid) {
         // Explore down
         var newLocation = exploreInDirection(currentLocation, Directions.Down, grid);
         if (newLocation.status === 'Goal') {
-            return newLocation.path;
+            return newLocation;
         } else if (newLocation.status === 'Valid') {
             queue.push(newLocation);
         }
@@ -81,7 +73,7 @@ var findShortestPath = function (startCoordinates, grid) {
         // Explore left
         var newLocation = exploreInDirection(currentLocation, Directions.Left, grid);
         if (newLocation.status === 'Goal') {
-            return newLocation.path;
+            return newLocation;
         } else if (newLocation.status === 'Valid') {
             queue.push(newLocation);
         }
@@ -152,18 +144,39 @@ var exploreInDirection = function (currentLocation, direction, grid) {
 
 
 
-function startPathGeneration(){
-
+function startPathGeneration() {
+    console.log('pathfinding')
     generatePathfindingTable();
 
-    var finalpath = findShortestPath([snake[0].x,snake[0].y,], grid);
+    console.log(grid.length)
     
-    var current = {x:snake[0].x, y:snake[0].y}
+
+    for (let x = 0; x < gridSize; x++) {
+        for (let y = 0; y < gridSize; y++) {
+            //console.log(x + ' ' + y);
+            document.getElementById(stringFromCords({x:x, y:y})).classList.add(grid[x][y]);
+        }
+    }
     
+    var result = findShortestPath({x:snake[0].x,y:snake[0].y,}, grid);
+
+    var finalpath = result.path;
+
+    console.log(result);
+
+
+
     console.log('Final path ' + finalpath);
 
+    for (let x = 0; x < gridSize; x++) {
+        for (let y = 0; y < gridSize; y++) {
+            //console.log(x + ' ' + y);
+            document.getElementById(stringFromCords({x:x, y:y})).classList.add(grid[x][y]);
+        }
+    }
+
+    var current = {x:snake[0].x , y:snake[0].y}
     for(i in finalpath){
-        console.log('Path loop' + i);
         var next_obj;
         switch (finalpath[i]) {
             case Directions.Up:
@@ -183,14 +196,11 @@ function startPathGeneration(){
               next_obj = { error: "Error" };
               break;
           }
-        
+
           current = next_obj;
 
-          document.getElementById(stringFromCords(next_obj)).className = "path";
+          document.getElementById(stringFromCords(next_obj)).classList.add("path");
     }
-
-
-
 }
 
 

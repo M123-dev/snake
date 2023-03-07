@@ -87,20 +87,19 @@ var findShortestPath = function (startCoordinates, grid) {
 // valid if not snake body && not visited already
 // Returns "Valid", "Invalid", "Blocked", or "Goal"
 var locationStatus = function (location, grid) {
-    var gridSize = tableSize;
     var y = location.y;
     var x = location.x;
 
-    if (location.x < 0 ||
-        location.x >= gridSize ||
-        location.y < 0 ||
-        location.y >= gridSize) {
+    if (x < 0 ||
+        x >= gridSize ||
+        y < 0 ||
+        y >= gridSize) {
 
         // location is not on the grid
         return 'Invalid';
-    } else if (grid[y][x] === 'Goal') {
+    } else if (grid[x][y] === 'Goal') {
         return 'Goal';
-    } else if (grid[y][x] !== 'Empty') {
+    } else if (grid[x][y] !== 'Empty') {
         // location is either a part of the snake or has been visited
         return 'Blocked';
     } else {
@@ -136,7 +135,8 @@ var exploreInDirection = function (currentLocation, direction, grid) {
 
     // If this new location is valid, mark it as 'Visited'
     if (newLocation.status === 'Valid') {
-        grid[newLocation.y][newLocation.x] = 'Visited';
+        grid[newLocation.x][newLocation.y] = 'Visited';
+        document.getElementById(stringFromCords({x:x, y:y})).classList.add(grid[x][y]);
     }
 
     return newLocation;

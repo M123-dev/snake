@@ -11,6 +11,14 @@ td {
     background-color: green;
 }
 
+.Visited {
+    background-color: cyan;
+}
+
+.path {
+    background-color: darkgreen;
+}
+
 .snakeHead {
     background-color: #ffd700;
 }
@@ -23,13 +31,7 @@ td {
     background-color: red;
 }
 
-.Visited {
-    background-color: darkgreen;
-}
 
-.path {
-    background-color: darkorchid;
-}
 
 /* Top right text */
 .top-right {

@@ -1,13 +1,30 @@
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+
 
 
 // Table size from generateTable.js
 var gridSize = tableSize;
 var grid = [];
 
+const shouldPaintVisited = false;
+const shouldPaintPath = true;
+const shouldSlowPaint = false;
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function clearMapArtifacts (){
+    const allElements = document.querySelectorAll('*');
+
+    allElements.forEach((element) => {
+        element.classList.remove('Visited');
+        element.classList.remove('path');
+      });
+}
+
 function generatePathfindingTable() {
+    clearMapArtifacts();
     grid = [];
 
     for (var i = 0; i < gridSize; i++) {
@@ -49,9 +66,12 @@ var findShortestPath = async function (startCoordinates, grid) {
     while (queue.length > 0) {
 
         // Used for path debugging
-        //await sleep(1);
-        
-        
+        if (shouldSlowPaint) {
+            await sleep(1);
+        }
+
+
+
         // Remove the first location
         var currentLocation = queue.shift();
 
@@ -145,7 +165,9 @@ var exploreInDirection = function (currentLocation, direction, grid) {
     if (newLocation.status === 'Valid') {
         grid[newLocation.x][newLocation.y] = 'Visited';
         // Paint the visited tiles
-        document.getElementById(stringFromCords({x:x, y:y})).classList.add('Visited');
+        if (shouldPaintVisited) {
+            document.getElementById(stringFromCords({ x: x, y: y })).classList.add('Visited');
+        }
     }
 
     return newLocation;
@@ -153,12 +175,12 @@ var exploreInDirection = function (currentLocation, direction, grid) {
 
 
 
-async function startPathGeneration(){
+async function startPathGeneration() {
     console.log('pathfinding')
     generatePathfindingTable();
 
     console.log(grid.length)
-    
+
 
     /*for (let x = 0; x < gridSize; x++) {
         for (let y = 0; y < gridSize; y++) {
@@ -166,8 +188,8 @@ async function startPathGeneration(){
             document.getElementById(stringFromCords({x:x, y:y})).classList.add(grid[x][y]);
         }
     }*/
-    
-    var result = await findShortestPath({x:snake[0].x,y:snake[0].y,}, grid);
+
+    var result = await findShortestPath({ x: snake[0].x, y: snake[0].y, }, grid);
 
     var finalpath = result.path;
 
@@ -175,32 +197,34 @@ async function startPathGeneration(){
 
     console.log('Final path ' + finalpath);
 
-    var current = {x:snake[0].x , y:snake[0].y}
-    for(i in finalpath){
+    var current = { x: snake[0].x, y: snake[0].y }
+    for (i in finalpath) {
         var next_obj;
         switch (finalpath[i]) {
             case Directions.Up:
-              next_obj = { x: current.x, y: current.y + 1 };
-              break;
+                next_obj = { x: current.x, y: current.y + 1 };
+                break;
             case Directions.Right:
-              next_obj = { x: current.x + 1, y: current.y };
-              break;
+                next_obj = { x: current.x + 1, y: current.y };
+                break;
             case Directions.Down:
-              next_obj = { x: current.x, y: current.y - 1 };
-              break;
+                next_obj = { x: current.x, y: current.y - 1 };
+                break;
             case Directions.Left:
-              next_obj = { x: current.x - 1, y: current.y };
-              break;
+                next_obj = { x: current.x - 1, y: current.y };
+                break;
             default:
-              console.log("Error unknown direction " + direction);
-              next_obj = { error: "Error" };
-              break;
-          }
+                console.log("Error unknown direction " + direction);
+                next_obj = { error: "Error" };
+                break;
+        }
 
-          current = next_obj;
-
-          document.getElementById(stringFromCords(next_obj)).classList.add("path");
+        current = next_obj;
+        if (shouldPaintPath) {
+            document.getElementById(stringFromCords(next_obj)).classList.add("path");
+        }
     }
+    return finalpath[0];
 }
 
 

@@ -1,6 +1,7 @@
 console.log("Init");
 
-const intervalTime = 100;
+const intervalTime = 40;
+const shouldPlayAutomatically = true;
 
 const startPos = Math.round(tableSize / 2);
 
@@ -155,7 +156,7 @@ window.addEventListener(
 );
 
 
-function tick() {
+async function tick() {
   if (isDead) {
     stop();
     document.getElementById(
@@ -165,6 +166,11 @@ function tick() {
 
   let current = snake[0];
   let next_obj;
+
+  if(shouldPlayAutomatically){
+    direction = await startPathGeneration();
+    console.log('M123: ' + direction);
+  }
 
   switch (direction) {
     case Directions.Up:

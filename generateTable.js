@@ -1,7 +1,8 @@
-const tableSize = 34;
+const tableSize = 35;
 
 console.log('Resize')
 
+function paintTable(){
 let body = document.getElementById("body");
 
 let windowSize = body.clientHeight;
@@ -36,3 +37,6 @@ for (let y = tableSize - 1; y >= 0; y--) {
 }
 htmlToAdd += "</table>";
 body.innerHTML = htmlToAdd;
+}
+
+paintTable();

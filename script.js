@@ -1,7 +1,8 @@
 console.log("Init");
 
-const intervalTime = 40;
-const shouldPlayAutomatically = true;
+const intervalTime = 120;
+const shouldPlayAutomatically = false;
+const shouldUseNeat = true;
 
 const startPos = Math.round(tableSize / 2);
 
@@ -54,13 +55,11 @@ function createApple() {
   const y = Math.floor(Math.random() * tableSize);
 
   apple_obj = { x: x, y: y };
-  let string = stringFromCords(apple_obj);
 
   let accept = true;
-  for (let obj in snake) {
-    let compare_string = stringFromCords(obj);
+  for (let compare_obj in snake) {
     // if snake is above apple don't accept
-    if (compare_string == string) {
+    if (apple_obj.x == compare_obj.x && apple_obj.y == compare_obj.y) {
       accept = false;
       break;
     }
@@ -83,19 +82,40 @@ function createApple() {
   }
 }
 
-
-
 function isCordObjEqual(one, two) {
   return one.x == two.x && one.y == two.y;
 }
 
-createApple();
+function init() {
+  createApple();
 
-// Color initial snake
-for (let i = 0; i < snake.length; i++) {
-  document.getElementById(stringFromCords(snake[i])).className = snakeBody;
+  // Color initial snake
+  for (let i = 0; i < snake.length; i++) {
+    document.getElementById(stringFromCords(snake[i])).className = snakeBody;
+  }
+  document.getElementById(stringFromCords(snake[0])).className = snakeHead;
 }
-document.getElementById(stringFromCords(snake[0])).className = snakeHead;
+
+init();
+
+function rebuild() {
+  snake = [
+    { x: startPos, y: startPos + 2 },
+    { x: startPos, y: startPos + 1 },
+    { x: startPos, y: startPos },
+  ];
+
+  if (mainThreat !== undefined) {
+    clearInterval(mainThreat);
+    mainThreat = undefined;
+  }
+
+  document.getElementById('body').innerHTML = '';
+
+  paintTable();
+
+  init();
+}
 
 // Change direction
 window.addEventListener(
@@ -104,11 +124,11 @@ window.addEventListener(
     if (event.defaultPrevented) {
       return; // Do nothing if the event was already processed
     }
-    
+
     /*if(event.key !== " " && event.key !== "f"){
       start();
     }*/
-    
+
 
     switch (event.key) {
       case "ArrowDown":
@@ -138,6 +158,9 @@ window.addEventListener(
       case "f":
         startPathGeneration();
         break;
+      case "r":
+        rebuild();
+        break;
       case "p":
         if (mainThreat !== undefined) {
           stop();
@@ -157,6 +180,14 @@ window.addEventListener(
 
 
 async function tick() {
+  if(shouldUseNeat){
+    //direction = round();
+    round();
+    if(isDead){
+      rebuild();
+    }
+  }
+
   if (isDead) {
     stop();
     document.getElementById(
@@ -167,7 +198,7 @@ async function tick() {
   let current = snake[0];
   let next_obj;
 
-  if(shouldPlayAutomatically){
+  if (shouldPlayAutomatically) {
     direction = await startPathGeneration();
     console.log('M123: ' + direction);
   }
@@ -231,3 +262,4 @@ async function tick() {
     snake.pop();
   }
 }
+

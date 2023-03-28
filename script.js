@@ -1,8 +1,9 @@
 console.log("Init");
 
-const intervalTime = 120;
-const shouldPlayAutomatically = false;
-const shouldUseNeat = true;
+var intervalTime = 40;
+const shouldPlayAutomatically = true;
+const shouldUseNeat = false;
+const showDeathScreen = false;
 
 const startPos = Math.round(tableSize / 2);
 
@@ -180,19 +181,21 @@ window.addEventListener(
 
 
 async function tick() {
-  if(shouldUseNeat){
+  if (shouldUseNeat) {
     //direction = round();
     round();
-    if(isDead){
+    if (isDead) {
       rebuild();
     }
   }
 
-  if (isDead) {
+  if (isDead && !shouldUseNeat) {
     stop();
-    document.getElementById(
-      "body"
-    ).innerHTML = `<p>Dead with score ${score}</p>`;
+    if (showDeathScreen) {
+      document.getElementById(
+        "body"
+      ).innerHTML = `<p>Dead with score ${score}</p>`;
+    }
   }
 
   let current = snake[0];
@@ -200,7 +203,7 @@ async function tick() {
 
   if (shouldPlayAutomatically) {
     direction = await startPathGeneration();
-    console.log('M123: ' + direction);
+    console.log('Pathfinding direction: ' + direction);
   }
 
   switch (direction) {
@@ -262,4 +265,17 @@ async function tick() {
     snake.pop();
   }
 }
+
+
+
+
+// create a dynamic interval timer
+
+var slider = document.getElementById("intervalTime");
+
+slider.oninput = function() {
+  intervalTime = parseInt(this.value);
+  stop();
+  start();
+} 
 

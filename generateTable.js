@@ -36,6 +36,9 @@ for (let y = tableSize - 1; y >= 0; y--) {
   htmlToAdd += "</tr>";
 }
 htmlToAdd += "</table>";
+
+htmlToAdd += '<input type="range" min="20" max="200" value= class="slider" id="intervalTime">';
+
 body.innerHTML = htmlToAdd;
 }
 

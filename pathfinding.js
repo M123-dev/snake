@@ -5,6 +5,10 @@
 var gridSize = tableSize;
 var grid = [];
 
+// A list of cordinates, we keep track of the tail of the snake
+// After x steps the last x steps are free to take
+var whiteMap;
+
 const shouldPaintVisited = false;
 const shouldPaintPath = true;
 const shouldSlowPaint = false;
@@ -49,6 +53,9 @@ function generatePathfindingTable() {
 var findShortestPath = async function (startCoordinates, grid) {
     var x = startCoordinates.x;
     var y = startCoordinates.y;
+    
+    // Re-initialize
+    whiteMap = new Map();
 
     // Each "location" will store its coordinates
     // and the shortest path required to arrive there
@@ -74,6 +81,33 @@ var findShortestPath = async function (startCoordinates, grid) {
 
         // Remove the first location
         var currentLocation = queue.shift();
+
+        var stepIndex = currentLocation.path.length;
+
+        var localWhiteList;
+        if(stepIndex > snake.length){
+            localWhiteList = snake;
+        } else {
+            localWhiteList = snake.slice(-(stepIndex-1));
+        }
+        whiteMap = new Map();
+        for(var i in localWhiteList){
+            whiteMap.set(JSON.stringify(localWhiteList[i]), 'empty');
+        }
+
+        console.log(whiteMap);
+    
+    
+    
+         
+    
+        console.log(whiteMap.keys.length);
+
+        
+
+
+
+
 
         // Explore up
         var newLocation = exploreInDirection(currentLocation, Directions.Up, grid);
@@ -116,8 +150,16 @@ var findShortestPath = async function (startCoordinates, grid) {
 // valid if not snake body && not visited already
 // Returns "Valid", "Invalid", "Blocked", or "Goal"
 var locationStatus = function (location, grid) {
+    
+
+
+
+    
+
     var y = location.y;
     var x = location.x;
+
+    console.log(JSON.stringify({'x':x, 'y':y}));
 
     if (x < 0 ||
         x >= gridSize ||
@@ -129,6 +171,15 @@ var locationStatus = function (location, grid) {
         return 'Goal';
     } else if (grid[x][y] !== 'Empty') {
         // location is either a part of the snake or has been visited
+
+        
+        // Ofc the snake moves over time
+        // x steps means the last x snake parts are free by the time 
+        // it is there
+        if(whiteMap.has(JSON.stringify({'x':x, 'y':y}))){
+            return 'Valid';
+        }
+
         return 'Blocked';
     } else {
         return 'Valid';
@@ -159,7 +210,7 @@ var exploreInDirection = function (currentLocation, direction, grid) {
         path: newPath,
         status: 'Unknown'
     };
-    newLocation.status = locationStatus(newLocation, grid);
+    newLocation.status = locationStatus(newLocation, grid, newPath.length);
 
     // If this new location is valid, mark it as 'Visited'
     if (newLocation.status === 'Valid') {
@@ -176,10 +227,7 @@ var exploreInDirection = function (currentLocation, direction, grid) {
 
 
 async function startPathGeneration() {
-    console.log('pathfinding')
     generatePathfindingTable();
-
-    console.log(grid.length)
 
 
     /*for (let x = 0; x < gridSize; x++) {
@@ -192,10 +240,6 @@ async function startPathGeneration() {
     var result = await findShortestPath({ x: snake[0].x, y: snake[0].y, }, grid);
 
     var finalpath = result.path;
-
-    console.log(result);
-
-    console.log('Final path ' + finalpath);
 
     var current = { x: snake[0].x, y: snake[0].y }
     for (i in finalpath) {
@@ -226,5 +270,3 @@ async function startPathGeneration() {
     }
     return finalpath[0];
 }
-
-

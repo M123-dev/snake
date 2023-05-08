@@ -1,9 +1,9 @@
 console.log("Init");
 
-var intervalTime = 40;
-const shouldPlayAutomatically = true;
+var intervalTime = 140;
+const shouldPlayAutomatically = false;
 const shouldUseNeat = false;
-const showDeathScreen = false;
+const showDeathScreen = true;
 
 const startPos = Math.round(tableSize / 2);
 
@@ -111,7 +111,7 @@ function rebuild() {
     mainThreat = undefined;
   }
 
-  document.getElementById('body').innerHTML = '';
+  document.getElementById("body").innerHTML = "";
 
   paintTable();
 
@@ -129,7 +129,6 @@ window.addEventListener(
     /*if(event.key !== " " && event.key !== "f"){
       start();
     }*/
-
 
     switch (event.key) {
       case "ArrowDown":
@@ -179,7 +178,6 @@ window.addEventListener(
   true
 );
 
-
 async function tick() {
   if (shouldUseNeat) {
     //direction = round();
@@ -203,7 +201,7 @@ async function tick() {
 
   if (shouldPlayAutomatically) {
     direction = await startPathGeneration();
-    console.log('Pathfinding direction: ' + direction);
+    console.log("Pathfinding direction: " + direction);
   }
 
   switch (direction) {
@@ -266,16 +264,12 @@ async function tick() {
   }
 }
 
-
-
-
 // create a dynamic interval timer
 
 var slider = document.getElementById("intervalTime");
 
-slider.oninput = function() {
+slider.oninput = function () {
   intervalTime = parseInt(this.value);
   stop();
   start();
-} 
-
+};

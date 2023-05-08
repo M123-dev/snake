@@ -1,53 +1,49 @@
 table,
 th,
 td {
-    border: 0px solid;
-    color: greenyellow;
-    padding: 0;
-    margin: 0;
+  border: 0px solid;
+  color: greenyellow;
+  padding: 0;
+  margin: 0;
 }
 
 td {
-    background-color: green;
+  background-color: green;
 }
 
 .Visited {
-    background-color: cyan;
+  background-color: cyan;
 }
 
 .path {
-    background-color: darkgreen;
+  background-color: darkgreen;
 }
 
 .snakeHead {
-    background-color: #ffd700;
+  background-color: #ffd700;
 }
 
 .snakeBody {
-    background-color: blue;
+  background-color: blue;
 }
 
 .apple {
-    background-color: red;
+  background-color: red;
 }
-
-
 
 /* Top right text */
 .top-right {
-    position: absolute;
-    top: 50px;
-    right: 50px;
+  position: absolute;
+  top: 50px;
+  right: 50px;
 }
 
-
 html {
-    margin: 0px;
-    height: 100vh;
-
+  margin: 0px;
+  height: 100vh;
 }
 
 body {
-    margin: 0px;
-    min-height: 100vh;
+  margin: 0px;
+  min-height: 100vh;
 }

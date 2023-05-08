@@ -6,57 +6,58 @@ let counter = 0;
 let neat;
 
 let config = {
-	model: [
-		{ nodeCount: (tableSize ^ 2), type: "input" },
-		{ nodeCount: 4, type: "output", activationfunc: activation.SOFTMAX }
-	],
-	mutationRate: 0.1,
-	crossoverMethod: crossover.RANDOM,
-	mutationMethod: mutate.RANDOM,
-	populationSize: 1
+  model: [
+    { nodeCount: tableSize ^ 2, type: "input" },
+    { nodeCount: 4, type: "output", activationfunc: activation.SOFTMAX },
+  ],
+  mutationRate: 0.1,
+  crossoverMethod: crossover.RANDOM,
+  mutationMethod: mutate.RANDOM,
+  populationSize: 1,
 };
 
 function setup() {
-	neat = new NEAT(config);
-	neat.doGen();
+  neat = new NEAT(config);
+  neat.doGen();
 }
 
 function round() {
-	neat.setInputs(getData(), 0);
+  neat.setInputs(getData(), 0);
 
-	neat.feedForward();
+  neat.feedForward();
 
-	let desicion = neat.getDesicions();
+  let desicion = neat.getDesicions();
 
-	console.log('Neat desicion: ' + desicion);
+  console.log("Neat desicion: " + desicion);
 
-	if (isDead) {
-		neat.setFitness(score, 0);
-		neat.doGen();
-	}
+  if (isDead) {
+    neat.setFitness(score, 0);
+    neat.doGen();
+  }
 }
 
-
 function getData() {
-	let data = [];
+  let data = [];
 
-	for (let y = tableSize - 1; y >= 0; y--) {
-		let inner_data = [];
-		for (let x = 0; x < tableSize; x++) {
-			inner_data.push(
-				stringFromCords({ 'x': x, 'y': y }) + ' ' +
-				document.getElementById(stringFromCords({ 'x': x, 'y': y })).classList.toString()
-			)
-		}
-		data.push(inner_data);
-	}
+  for (let y = tableSize - 1; y >= 0; y--) {
+    let inner_data = [];
+    for (let x = 0; x < tableSize; x++) {
+      inner_data.push(
+        stringFromCords({ x: x, y: y }) +
+          " " +
+          document
+            .getElementById(stringFromCords({ x: x, y: y }))
+            .classList.toString()
+      );
+    }
+    data.push(inner_data);
+  }
 
-	return data;
+  return data;
 }
 
 setup();
 round();
-
 
 /*
 neat.doGen(); // Does one generation with mutation and crossover.
